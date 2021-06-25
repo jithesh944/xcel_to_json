@@ -20,12 +20,13 @@ for (i, sheet) in enumerate(xcel_sheet_names):
     m_col = xcel_file[sheet].max_column
 
     # print(m_row, m_col)
+    # calcluating the active cell dimension.
     start_cell, end_cell = ws.calculate_dimension().split(':')
     header_row = tuple(v.value for v in (ws[1]))
-    print(len(header_row))
+    # print(len(header_row))
 
     cell_values = ws.iter_rows(min_row = 2,max_row = m_row, max_col = m_col,values_only = True)
-
+    # create the dict with col#1 as the key and remaining data as child dict.
     final_dict = dict()
     header_dict = dict()
     for row in (cell_values):
@@ -36,8 +37,8 @@ for (i, sheet) in enumerate(xcel_sheet_names):
                     header_dict[header_row[col]] = row[col]
             final_dict[id_num] = header_dict
 
-    print(final_dict)
-            
+    # print(final_dict)
+    # Creating the JSON file and writing the data 
     filename = 'json_file_' + sheet + '.json'
     with open (filename,'w') as f:
         json.dump(final_dict,f,indent=4)
